@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:9.6.1
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: changeme
@@ -15,8 +15,9 @@ services:
       - ./backend/:/usr/app
       - /usr/app/node_modules
     ports:
-      - '8081:8081'
+      - "8081:8081"
     stdin_open: true
     tty: true
+    restart: always
     depends_on:
       - postgres
