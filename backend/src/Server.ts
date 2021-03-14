@@ -1,6 +1,6 @@
-import {Env} from "@tsed/core";
-import {Configuration, Inject} from "@tsed/di";
-import {$log, PlatformApplication} from "@tsed/common";
+import { Env } from "@tsed/core";
+import { Configuration, Inject } from "@tsed/di";
+import { $log, PlatformApplication } from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
 import bodyParser from "body-parser";
 import compress from "compression";
@@ -11,7 +11,6 @@ import "@tsed/ajv";
 import "@tsed/typeorm";
 import typeormConfig from "./config/typeorm";
 
-
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
 
@@ -20,16 +19,16 @@ if (isProduction) {
     type: "stdout",
     levels: ["info", "debug"],
     layout: {
-      type: "json"
-    }
+      type: "json",
+    },
   });
 
   $log.appenders.set("stderr", {
     levels: ["trace", "fatal", "error", "warn"],
     type: "stderr",
     layout: {
-      type: "json"
-    }
+      type: "json",
+    },
   });
 }
 
@@ -39,17 +38,13 @@ if (isProduction) {
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // CHANGE
   logger: {
-    disableRoutesSummary: isProduction
+    disableRoutesSummary: isProduction,
   },
   mount: {
-    "/rest": [
-      `${rootDir}/controllers/**/*.ts`
-    ]
+    "/rest": [`${rootDir}/controllers/**/*.ts`],
   },
   typeorm: typeormConfig,
-  exclude: [
-    "**/*.spec.ts"
-  ]
+  exclude: ["**/*.spec.ts"],
 })
 export class Server {
   @Inject()
@@ -65,8 +60,10 @@ export class Server {
       .use(compress({}))
       .use(methodOverride())
       .use(bodyParser.json())
-      .use(bodyParser.urlencoded({
-        extended: true
-      }));
+      .use(
+        bodyParser.urlencoded({
+          extended: true,
+        })
+      );
   }
 }
