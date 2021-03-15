@@ -35,9 +35,7 @@ export default function StatCard({
   return (
     <Card classes={{ root: styles.cardRoot }}>
       <CardContent className={styles.cardContentRoot}>
-        <Typography className={styles.data}>
-          ${data.toLocaleString()}
-        </Typography>
+        <Typography className={styles.data}>{data}</Typography>
         <span>{subtitle}</span>
         <Icon className={styles.icon} />
       </CardContent>

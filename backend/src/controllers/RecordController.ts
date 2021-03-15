@@ -21,12 +21,13 @@ export class RecordController {
           metrics: (metrics as unknown) as RecordMetricType,
         })
       )
-        .slice(count)
+        .slice(0, count)
         .map((r) => r.data),
       labels = [];
     for (let i = 0; i < count; i++) {
       labels.push(addDays(startDate, i));
     }
+    console.log(count);
     return {
       success: true,
       data: {
@@ -39,10 +40,10 @@ export class RecordController {
               },
             ],
             metrics: metrics,
-            labels: [],
+            labels: labels.map((d) => format(d, "yyyy-MM-dd")),
             datasets: [
               {
-                label: labels.map((d) => format(d, "yyyy-MM-dd")),
+                label: "",
                 data,
               },
             ],
