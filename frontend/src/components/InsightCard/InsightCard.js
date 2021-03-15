@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function InsightCard({}) {
+export default function InsightCard() {
   const styles = useStyles();
   return (
     <Card classes={{ root: styles.cardRoot }}>

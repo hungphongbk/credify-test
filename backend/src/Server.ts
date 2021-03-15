@@ -1,5 +1,5 @@
 import { Env } from "@tsed/core";
-import { Configuration, Inject } from "@tsed/di";
+import { Configuration, Inject, InjectorService } from "@tsed/di";
 import { $log, PlatformApplication } from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
 import bodyParser from "body-parser";
@@ -10,6 +10,11 @@ import cors from "cors";
 import "@tsed/ajv";
 import "@tsed/typeorm";
 import typeormConfig from "./config/typeorm";
+import { exec } from "child_process";
+import { promisify } from "util";
+import { RecordRepository } from "./repositories/RecordRepository";
+
+const execAsync = promisify(exec);
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
@@ -53,6 +58,9 @@ export class Server {
   @Configuration()
   settings: Configuration;
 
+  @Inject()
+  injector: InjectorService;
+
   $beforeRoutesInit(): void {
     this.app
       .use(cors())
@@ -65,5 +73,13 @@ export class Server {
           extended: true,
         })
       );
+  }
+
+  async $onReady(): Promise<void> {
+    const repo = this.injector.get<RecordRepository>(RecordRepository)!,
+      count = await repo.count();
+    if (!count) {
+      await execAsync("npm run dev:seeds");
+    }
   }
 }
