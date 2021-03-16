@@ -24,6 +24,8 @@ $ cd frontend
 $ npm run start
 ```
 
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
 ### In production mode
 
 Just execute the command below. All things have been bundled in Docker for one-time build and execution.
@@ -31,6 +33,8 @@ Just execute the command below. All things have been bundled in Docker for one-t
 ```shell
 $ docker-compose -f docker-compose.prod.yml up -d --build
 ```
+
+Production web can be view at [http://localhost:8000](http://localhost:8000)
 
 ## Technique frameworks & libraries
 
