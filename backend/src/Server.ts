@@ -1,6 +1,6 @@
 import { Env } from "@tsed/core";
 import { Configuration, Inject, InjectorService } from "@tsed/di";
-import { $log, PlatformApplication } from "@tsed/common";
+import { $log, PlatformApplication, Res } from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
 import bodyParser from "body-parser";
 import compress from "compression";
@@ -13,6 +13,7 @@ import typeormConfig from "./config/typeorm";
 import { exec } from "child_process";
 import { promisify } from "util";
 import { RecordRepository } from "./repositories/RecordRepository";
+import path from "path";
 
 const execAsync = promisify(exec);
 
@@ -50,6 +51,13 @@ if (isProduction) {
   },
   typeorm: typeormConfig,
   exclude: ["**/*.spec.ts"],
+  statics: {
+    "/": [
+      {
+        root: path.join(rootDir, "../../frontend/build"),
+      },
+    ],
+  },
 })
 export class Server {
   @Inject()
@@ -73,6 +81,13 @@ export class Server {
           extended: true,
         })
       );
+  }
+
+  $afterRoutesInit() {
+    if (process.env.NODE_ENV === "production")
+      this.app.get(`/*`, (req: any, res: Res) => {
+        res.sendFile(path.join(rootDir, "../../frontend/build", "index.html"));
+      });
   }
 
   async $onReady(): Promise<void> {

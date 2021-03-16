@@ -6,6 +6,7 @@ import styles from "./App.module.scss";
 import InsightCard from "./components/InsightCard";
 import { getData } from "./services";
 import { zipWith } from "lodash";
+
 function App() {
   const [data, setData] = React.useState(null);
   React.useEffect(() => {

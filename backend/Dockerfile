@@ -1,6 +1,6 @@
 FROM node:12.13.0-alpine
 WORKDIR /usr/app
-RUN apk update && apk add build-base git python
+RUN apk update
 
 COPY package*.json ./
 RUN npm ci

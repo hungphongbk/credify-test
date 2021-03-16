@@ -1,3 +1,4 @@
 import axios from "axios";
 
-axios.defaults.baseURL = process.env.API_ENV || "http://localhost:8081";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:8081";
